@@ -1,0 +1,50 @@
+package user;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class UserDAO {
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
+	public UserDAO() {
+		try {
+//			String dbURL = "jdbc:mariadb://localhost:3306/BBS";
+//			String dbID = "root";
+//			String dbPassword = "root";
+//			Class.forName("org.mariadb.jdbc.Driver");
+//			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+			
+			Class.forName("org.mariadb.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/BBS", dbID, dbPassword);
+		} catch(Exception e) {
+			e.printStackTrace();//오류 발생시 오류 뭔지 출력
+		}
+	}
+	
+	public int login(String userID, String userPassword) {//A
+		System.out.println("userID: "+userID);
+		System.out.println("userPassword: "+userPassword);
+		
+		String SQL = "SELECT userPassword FROM USER WHERE userID = ?";//B
+		
+		try {
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, userID);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {//id 있는 경우, 결과로 나온 userPassword(B) 받아서 접속시도한 사용자의 password(A)와 동일한지 검사
+				if(rs.getString(1).equals(userPassword)) {
+					return 1;//로그인 성공
+				}
+				else return 0;//비밀번호 불일치
+			}
+			return -1; // 아이디가 없음
+		} catch(Exception e) {
+			e.printStackTrace();//오류 발생시 오류 뭔지 출력
+		}
+		return -2;// DB Error code
+	}
+}

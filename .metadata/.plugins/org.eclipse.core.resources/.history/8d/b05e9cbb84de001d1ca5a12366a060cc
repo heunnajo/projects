@@ -1,0 +1,10 @@
+package comment;
+
+public class Comment {
+	private int commentID;
+	private String userID;
+	private String commentContent;
+	private String bbsDate;
+	private String bbsContent;
+	private int bbsID;
+}

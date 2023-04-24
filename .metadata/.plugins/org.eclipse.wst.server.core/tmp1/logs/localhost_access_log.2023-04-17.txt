@@ -1,0 +1,8 @@
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:40:48 +0900] "GET /BBS/WEB-INF/classes/user/UserDAO.java HTTP/1.1" 404 721
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:41:01 +0900] "GET /BBS/index.jsp HTTP/1.1" 200 236
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:41:01 +0900] "GET /BBS/login.jsp HTTP/1.1" 200 2178
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:41:01 +0900] "GET /BBS/js/bootstrap.js HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:41:01 +0900] "GET /BBS/css/bootstrap.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:41:08 +0900] "POST /BBS/loginAction.jsp HTTP/1.1" 200 292
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:46:44 +0900] "GET /BBS/login.jsp HTTP/1.1" 200 2178
+0:0:0:0:0:0:0:1 - - [17/Apr/2023:04:46:53 +0900] "POST /BBS/loginAction.jsp HTTP/1.1" 200 292

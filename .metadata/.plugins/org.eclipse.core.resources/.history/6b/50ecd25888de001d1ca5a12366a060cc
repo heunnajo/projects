@@ -1,0 +1,13 @@
+package comment;
+
+public class CommentDAO {
+	public ArrayList<Comment> listComment(String seq){
+		String SQL = "";
+		try {
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}
