@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value=""/>
+		<item key="selection" value="request"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="request"/>
+			<item value="conversationID"/>
+			<item value="이메일"/>
+			<item value="글 제목"/>
+			<item value="게시판"/>
 			<item value="getBbsID"/>
 			<item value="where"/>
 			<item value="이전"/>
@@ -18,17 +23,12 @@
 			<item value="navbar"/>
 			<item value="Comment"/>
 			<item value="bbsAvailable"/>
-			<item value="JAR"/>
-			<item value="conn 확인:"/>
-			<item value="확인&apos;"/>
-			<item value="확인"/>
-			<item value="response"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1843"/>
+		<item key="DIALOG_X_ORIGIN" value="599"/>
 		<item key="DIALOG_Y_ORIGIN" value="287"/>
 		<item key="DIALOG_WIDTH" value="369"/>
 		<item key="DIALOG_HEIGHT" value="454"/>
