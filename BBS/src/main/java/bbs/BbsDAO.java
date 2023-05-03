@@ -95,6 +95,8 @@ public class BbsDAO {
 			pstmt.setInt(6, 1);
 			//rs = pstmt.executeQuery();//insert의 경우 사실 불필요.
 			return pstmt.executeUpdate();
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();//오류 발생시 오류 뭔지 출력
 		}
