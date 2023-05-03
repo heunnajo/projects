@@ -66,7 +66,7 @@
 						script.println("location.href= \'view.jsp?bbsID="+bbsID+"\'");
 						script.println("</script>");
 					}
-		}
+				}
 		
 		}
 	%>
