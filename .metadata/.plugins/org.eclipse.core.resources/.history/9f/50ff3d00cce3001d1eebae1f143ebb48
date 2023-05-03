@@ -1,0 +1,35 @@
+package dti;
+
+public class Dti {
+	/*
+	 private int bbsID;
+	private String bbsTitle;
+	private String userID;
+	private String bbsDate;
+	private String bbsContent;
+	private int bbsAvailable;
+	 * */
+	private String conversationID;
+	private String supBuyType;
+	private String direction;
+	private String dtiDate;
+	private String dtiType;
+	private String taxDemand;
+	private String supComRegno;
+	private String supRepName;
+	private String supComName;
+	private String supComAddr;
+	private String byrComRegno;
+	private String byrRepName;
+	private String byrComName;
+	private String byrComAddr;
+	private String byrEmail;
+	private String supAmount;
+	private String taxAmount;
+	private String totalAmount;
+	private String DttYn;
+	private String amendCode;
+	private String oriIssueId;
+	
+	
+}
