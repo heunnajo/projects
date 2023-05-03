@@ -9,6 +9,11 @@ import java.net.*;
 import java.io.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 public class DtiDAO {
 	private Connection conn;
@@ -207,6 +212,7 @@ public class DtiDAO {
 		}
 		return -1; //데이터베이스 오류
 	}
+
 	/*
 	public static void main(String[] args) {
       JSONObject obj = new JSONObject();
