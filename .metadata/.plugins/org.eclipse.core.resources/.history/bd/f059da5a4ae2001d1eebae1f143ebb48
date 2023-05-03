@@ -1,0 +1,22 @@
+package dti;
+
+public class Dti {
+	private String MessageId;
+	private String Signal;
+	private String RequestTime;
+	private String SendComRegno;
+	private String ReceiveComRegno;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	private String a;
+	
+}
