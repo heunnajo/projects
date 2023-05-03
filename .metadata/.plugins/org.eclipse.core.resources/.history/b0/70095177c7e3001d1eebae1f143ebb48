@@ -1,0 +1,125 @@
+package dti;
+
+public class Dti {
+	private String MessageId;
+	private String Signal;
+	private String RequestTime;
+	private String SendComRegno;
+	private String ReceiveComRegno;
+	private String AuthToken;
+	private String ServiceCode;
+	private String SystemType;
+	private String[] ConversationId;
+	private String SMTPEmail;
+	private String RValue;
+	private String CertPassword;
+	private String SignedXML;
+	private String SystemId;
+	private String PlatformCode;
+	private String DtiType;
+	private String SignedJson;
+	public String getMessageId() {
+		return MessageId;
+	}
+	public void setMessageId(String messageId) {
+		MessageId = messageId;
+	}
+	public String getSignal() {
+		return Signal;
+	}
+	public void setSignal(String signal) {
+		Signal = signal;
+	}
+	public String getRequestTime() {
+		return RequestTime;
+	}
+	public void setRequestTime(String requestTime) {
+		RequestTime = requestTime;
+	}
+	public String getSendComRegno() {
+		return SendComRegno;
+	}
+	public void setSendComRegno(String sendComRegno) {
+		SendComRegno = sendComRegno;
+	}
+	public String getReceiveComRegno() {
+		return ReceiveComRegno;
+	}
+	public void setReceiveComRegno(String receiveComRegno) {
+		ReceiveComRegno = receiveComRegno;
+	}
+	public String getAuthToken() {
+		return AuthToken;
+	}
+	public void setAuthToken(String authToken) {
+		AuthToken = authToken;
+	}
+	public String getServiceCode() {
+		return ServiceCode;
+	}
+	public void setServiceCode(String serviceCode) {
+		ServiceCode = serviceCode;
+	}
+	public String getSystemType() {
+		return SystemType;
+	}
+	public void setSystemType(String systemType) {
+		SystemType = systemType;
+	}
+	public String[] getConversationId() {
+		return ConversationId;
+	}
+	public void setConversationId(String[] conversationId) {
+		ConversationId = conversationId;
+	}
+	public String getSMTPEmail() {
+		return SMTPEmail;
+	}
+	public void setSMTPEmail(String sMTPEmail) {
+		SMTPEmail = sMTPEmail;
+	}
+	public String getRValue() {
+		return RValue;
+	}
+	public void setRValue(String rValue) {
+		RValue = rValue;
+	}
+	public String getCertPassword() {
+		return CertPassword;
+	}
+	public void setCertPassword(String certPassword) {
+		CertPassword = certPassword;
+	}
+	public String getSignedXML() {
+		return SignedXML;
+	}
+	public void setSignedXML(String signedXML) {
+		SignedXML = signedXML;
+	}
+	public String getSystemId() {
+		return SystemId;
+	}
+	public void setSystemId(String systemId) {
+		SystemId = systemId;
+	}
+	public String getPlatformCode() {
+		return PlatformCode;
+	}
+	public void setPlatformCode(String platformCode) {
+		PlatformCode = platformCode;
+	}
+	public String getDtiType() {
+		return DtiType;
+	}
+	public void setDtiType(String dtiType) {
+		DtiType = dtiType;
+	}
+	public String getSignedJson() {
+		return SignedJson;
+	}
+	public void setSignedJson(String signedJson) {
+		SignedJson = signedJson;
+	}
+	
+	
+}
