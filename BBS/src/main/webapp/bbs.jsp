@@ -45,6 +45,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
 				<li class="active"><a href="bbs.jsp">게시판</a></li>
+				<li><a href="dtiInvoice.jsp">세금계산서 발행</a></li>
 			</ul>
 			<%
 				if(userID == null){//로그인 안 되어있을 때
