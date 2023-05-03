@@ -4,11 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/custom.css">
 <title>JSP 게시판 웹 사이트</title>
 </head>
 <body>
 	<script>
-		location.href = 'login.jsp';
+		location.href = 'main.jsp';//처음 접속하는 사람들은 이제 index가 아니라 main.jsp로 접속!
 	</script>
 </body>
 </html>
