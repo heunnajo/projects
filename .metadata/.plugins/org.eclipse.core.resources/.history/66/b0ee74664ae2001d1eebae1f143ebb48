@@ -1,0 +1,22 @@
+package dti;
+
+public class Dti {
+	private String MessageId;
+	private String Signal;
+	private String RequestTime;
+	private String SendComRegno;
+	private String ReceiveComRegno;
+	private String AuthToken;
+	private String ServiceCode;
+	private String SystemType;
+	private String[] ConversationId;
+	private String SMTPEmail;
+	private String RValue;
+	private String CertPassword;
+	private String SignedXML;
+	private String SystemId;
+	private String PlatformCode;
+	private String DtiType;
+	private String SignedJson;
+	
+}
