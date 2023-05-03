@@ -32,6 +32,8 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="main.jsp">메인</a></li>
 				<li><a href="bbs.jsp">게시판</a></li>
+				<li><a href="dtiInvoice.jsp">세금계산서 발행</a></li>
+				<li><a href="readDtiInvoice.jsp">세금계산서 조회</a></li>
 			</ul>
 			<%
 				if(userID == null){//로그인 안 되어있을 때
@@ -102,6 +104,7 @@
 			</a>
 		</div>
 	</div>
+	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 </body>
