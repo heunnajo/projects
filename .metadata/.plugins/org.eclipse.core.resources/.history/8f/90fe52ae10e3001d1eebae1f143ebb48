@@ -1,0 +1,717 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter" %>    <!-- script 실행할 수 있도록 라이브러리 불러옴 -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width", initial-scale="1">
+<title>흔나의 게시판</title>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+	<%
+		String userID = null;
+		if(session.getAttribute("userID") != null){
+			userID = (String) session.getAttribute("userID");	
+		}
+	%>
+	<nav class="navbar navbar-default">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+				aria-expanded="false">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="main.jsp">JSP 게시판 웹 사이트</a>
+		</div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="main.jsp">메인</a></li>
+				<li><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="smartbill.jsp">세금계산서 발행</a></li>
+			</ul>
+			<%
+				if(userID == null){//로그인 안 되어있을 때
+			%>		
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">접속하기<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="login.jsp">로그인</a></li>
+						<li><a href="join.jsp">회원가입</a></li>
+					</ul>
+				</li>
+			</ul>
+			<%
+				} else{//로그인 되어있을 때
+			%>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">회원관리<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="logoutAction.jsp">로그아웃</a></li>
+					</ul>
+				</li>
+			</ul>
+			
+			<%
+				}
+			%>
+			
+		</div>
+	</nav>
+	<!--  
+	<div class="container">
+		<div class="row">
+		<form method="post" action="writeAction.jsp">
+			<table class="table table-striped" style="text-align; center; border: 1px solid #dddddd">
+				<thead>
+					<tr>
+						<th colspan="2" style="background-color: #eeeeee; text-align: center;">세금계산서 발행</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="text" class="form-control" placeholder="글 제목" name="bbsTitle" maxlength="50"></td>
+					</tr>
+					<tr>
+						<td><textarea class="form-control" placeholder="글 내용" name="bbsContent" maxlength="2048" style="height: 350px;"></textarea></td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
+		</form>
+		</div>
+	</div>
+	-->
+	<!-- 컨텐츠 영역 start-->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="dti_table">
+                            <tr>
+                            <td> 
+                                <!-- 페이지 정보 start-->
+                                <table width="100%"  cellpadding="0" cellspacing="0" border="0">
+                                  <tr>
+                                    <td height="22"></td>
+                                  </tr>
+                                  <!-- 리타겟팅 광고 추가 20200303 -->
+                                  <tr id="trView" style="display:none;">
+                                    <td height="8">
+                                      <div class="sb_topad_dtisub"></div>
+                                    </td>
+                                  </tr> 
+                                  <tr id="trView_hr"style="display:none;">
+                                    <td height="20"></td>
+                                  </tr>
+                                  <tr height="18">
+                                    <td>
+                                        
+                                          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                              <td width="40%" align=left><img src="/image/common/btn_dti_mk.gif"  /></td>
+                                              <td width="60%" align="right" >
+                                              <div id="Div1"  title="현재 페이지 위치정보">
+                                              
+                                              </div></td>
+                                            </tr>
+                                        </table>
+                                       
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td height="7" ></td>
+                                  </tr>
+                                  <tr>
+                                    <td height="1" bgcolor="#E7E7E7" ></td>
+                                  </tr>
+                                  <tr>
+                                    <td height="20"></td>
+                                  </tr>				              
+                                </table>
+                                <!-- //페이지 정보 end-->
+                        </td>
+                     </tr>
+                     <tr>
+                       <td> 
+                           
+                           
+<script language="javascript">
+/*추가 jquery 부분 시작 */
+    jq$( function() {
+
+            jq$('#imgCal').datepick({
+                showOnFocus: false,
+                yearRange: 'c-3:c+3',
+                showTrigger: '#Uc_imgCalendar',
+		        onSelect: function(dateText, inst) {
+                    document.all.Uc_txtDocumentDateTime.value = document.getElementById("imgCal").value;
+                }
+            });
+        });
+    /*추가 jquery 부분 종료 */
+</script>
+<div style="display: none;"><img src="/image/common/ic_calendar.gif" id="Uc_imgCalendar" alt="달력" style="padding-left:3px;cursor:pointer;" class="vaMiddle cPointer" /></div>
+                           <div class="taxBillDivision">    
+                            <img height="1" src="/image/common/img_transbg.gif" width="17">                       
+                             <table class="redTaxBillForm" summary="세금계산서" width="100%">
+                               <caption>
+                                세금계산서
+                               </caption>
+                               <colgroup>
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               <col width="" />
+                               </colgroup>
+                               <tbody>
+                                   <tr>
+								    <!--0526수정 시작-->
+                                    <th class="title borderR0" colspan="12" rowspan="3" id="Main_title" >전자세금계산서 </th>
+                                    <th colspan="4" rowspan="3" class="subject borderL0 borderR0"> 공급자<br />(보관용) </th>
+		                            <th colspan="4" rowspan="3" class="subject borderL0 borderR0"> </th>     
+                                    <th  colspan="4">승인번호</th>
+                                    <td class="DTILeftText" colspan="8">                                    
+                                    <span id="Uc_lblIssueID"></span></td>
+                                  </tr>
+                                  <!--20131121 : 당초승인번호 추가-->
+                                  <tr id="orgIssueID" style="display:block">
+                                    <th  colspan="4">당초 승인번호</th>
+                                    <td class="DTILeftText" colspan="8">
+                                      <input name="Uc$txtOriginalIssueID" type="text" id="Uc_txtOriginalIssueID" class="inputL inputCom" Onblur="fnChkByteLength(this,24);" style="width:95%;" />
+                                      
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <th  colspan="4">관리번호</th>
+                                    <td class="DTILeftText" colspan="8">
+                                      <input name="Uc$txtSequenceIdentifier" type="text" id="Uc_txtSequenceIdentifier" class="inputL inputCom" Onblur="fnChkByteLength3(this,24);" style="width:95%;" />
+                                    </td>
+                                  </tr>
+								  
+                                  <tr>
+                                    <th class="borderBD3" rowspan="6" width="4%"> <strong>공급자</strong></th>
+                                    <th colspan="3">등록번호</th>
+                                    <td class="inputMemberblue" colspan="12"><span id="Uc_lblSupPartyIdentifier">101-01-01010</span></td>
+                                    <th class="borderBD3" rowspan="6" width="8%"> <strong>공급받는자</strong></th>
+                                    <th colspan="3">등록번호</th>
+                                    <td class="inputMemberblue" colspan="12"><span id="Uc_lblBuyPartyIdentifier">111-11-11113</span></td>
+                                  </tr>
+                                  <tr>
+                                    <th colspan="3">상호<br/>(법인명)</th>		
+                                    <td class="DTILeftText" colspan="5"><span id="Uc_lblSupOrganizationName">바이너리</span></td>
+                                    <th colspan="2">성명</th>
+                                    <td class="DTILeftText" colspan="5"><span id="Uc_lblSupPartyName">공일공</span></td>
+                                    <th colspan="3">상호<br/>(법인명)</th>
+                                    <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyOrganizationName">테스트 사업장</span></td>
+                                    <th colspan="2">성명</th>
+                                    <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyPartyName">테스트대표자</span></td>
+                                  </tr>
+                                  <tr>
+                                    <th colspan="3">사업장<br/>주소</th>
+                                    <td class="DTILeftText" colspan="5"><span id="Uc_lblSupAddress">서울특별시 강남구 학동로  230 (논현동) 유빔빌딩</span></td>
+									<th colspan="2">종사업<br>장번호</th>
+                                    <td class="DTILeftText" colspan="5"><input name="Uc$txtSupBizPlaceCode" type="text" maxlength="4" id="Uc_txtSupBizPlaceCode" class="inputR inputCom" style="width:100px;" /></td>
+									<!--0526 수정 끝-->
+									
+                                    <th colspan="3">사업장<br/>주소</th>
+		                            <!--0526수정 시작-->
+                                    <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyAddress">서울시 </span></td>
+									<th colspan="2">종사업<br>장번호</th>                                    
+                                    <td class="DTILeftText" colspan="5"><input name="Uc$txtBuyBizPlaceCode" type="text" maxlength="4" id="Uc_txtBuyBizPlaceCode" class="inputR inputCom" style="width:100px;" /></td>
+									<!--0526수정 끝-->
+                                  </tr>
+                                 <tr>
+                                   <th colspan="3">업태</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblSupBusinessType">정보통신업</span></td>
+                                   <th colspan="2">종목</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblSupBusinessClass">소프트웨어</span></td>
+                                   <th colspan="3">업태</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyBusinessType">업태</span></td>
+                                   <th colspan="2">종목</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyBusinessClass">테스트종목</span></td>
+                                 </tr>
+                                 <tr>
+                                   <th colspan="3">담당자</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblSupPersonName">goodday</span></td>
+                                   <th colspan="2">연락처</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblSupTelephone">010-9075-5417</span></td>
+                                   <th colspan="3">담당자</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyPersonName">goodday</span><a href="javascript:fnChgCharge('ar')"></a></td>
+                                   <th colspan="2">연락처</th>
+                                   <td class="DTILeftText" colspan="5"><span id="Uc_lblBuyTelephone">010-9075-5417</span></td>
+                                 </tr>
+                                 <tr>
+                                   <th class="borderBD3" colspan="3">이메일</th>
+                                   <td class="DTILeftText borderBD3" colspan="12"><span id="Uc_lblSupEmail">goodday@businesson.co.kr</span></td>
+                                   <th class="borderBD3" colspan="3">이메일</th>
+                                   <td class="DTILeftText borderBD3" colspan="12"><span id="Uc_lblBuyEmail">goodday@businesson.co.kr</span></td>
+                                 </tr>
+                                 <tr bgcolor="#F7F5F4">
+                                   <th colspan="4">세액종류</th>
+                                   <td class="DTILeftText" colspan="28">
+                                     <span class="radio"><input id="Uc_rbtnDTIType1" type="radio" name="Uc$DTITYPE" value="rbtnDTIType1" checked="checked" onclick="fnCalcType2('D');" /><label for="Uc_rbtnDTIType1">과세(10%)</label></span>
+                                    <img height="8" src="/image/common/img_trans.gif" width="35">
+                                    <span class="radio"><input id="Uc_rbtnDTIType2" type="radio" name="Uc$DTITYPE" value="rbtnDTIType2" onclick="fnCalcType2('D');" /><label for="Uc_rbtnDTIType2">영세(0%)</label></span>
+                                    <img height="8" src="/image/common/img_trans.gif" width="35">
+                                            </td>
+                                 </tr>
+                                 <tr bgcolor="#F7F5F4">
+                                   <th class="borderBD3" colspan="4">작성방법</th>
+                                   <td class="DTILeftText borderBD3" colspan="28" style="padding:0 0 0 3px">
+                                     <span class="radio"><input id="Uc_rbtnInputType1" type="radio" name="Uc$DTIINPUT" value="rbtnInputType1" checked="checked" onclick="fnInpType2(0,'D');" /><label for="Uc_rbtnInputType1">수량/단가 입력</label></span>
+                                     <span class="DTILeftText"><img height="8" src="/image/common/img_trans.gif" width="8">
+                                     <span class="radio"><input id="Uc_rbtnInputType2" type="radio" name="Uc$DTIINPUT" value="rbtnInputType2" onclick="fnInpType2(1,'D');" /><label for="Uc_rbtnInputType2">공급가액 입력</label></span>
+                                     <img height="8" src="/image/common/img_trans.gif" width="9">
+                                     <span class="radio"><input id="Uc_rbtnInputType3" type="radio" name="Uc$DTIINPUT" value="rbtnInputType3" onclick="fnInpType2(2,'D');" /><label for="Uc_rbtnInputType3">합계금액 입력</label></span>        
+                                    <input name="Uc$txtCalcSum" type="text" maxlength="14" id="Uc_txtCalcSum" class="inputR inputCom" onKeyUp="fnCalcSumCheck2(this, event,'D');" onKeyPress="fnChkNum();return handleEnterSum2(this, event,'D');" onblur="fnCalcSum2('D')" style="width:13%; height:9px;" />
+                                    <img src="/image/common/btn_input_s.gif" id="Uc_imgInput" alt="입력" class="vaMiddle" height="17" width="39" /><img height="8" src="/image/common/img_trans.gif" width="9">
+                                    <input id="Uc_rbtnInputType4" type="radio" name="Uc$DTIINPUT" value="rbtnInputType4" onclick="fnInpType2(3,'D');" /><label for="Uc_rbtnInputType4">직접입력</label>
+                                     <!--0원발행추가 start-->                                   
+                                     <input id="Uc_rbtnInputType5" type="radio" name="Uc$DTIINPUT" value="rbtnInputType5" onclick="fnInpType2(4,'D');" /><label for="Uc_rbtnInputType5">0원발행</label>
+                                     <!--0원발행추가 End-->    
+                                     </span></td>
+                                 </tr>
+                                 <tr>
+                                   <th colspan="4"><strong>작성&nbsp;</strong> <input id="imgCal" type="hidden" value=""></th>
+                                   <th colspan="10"><strong>공급가액</strong></th>
+                                   <th colspan="8"><strong>세액</strong></th>
+                                   <th colspan="10"><strong>수정사유  <img height='19' src='/image/common/question.gif' width='19' border='0' class="vaMiddle cPointer" alt='수정세금계산서 교부사용 및 방법 요약' onclick="fnOpenPopScroll(698, 815, '', '/xDti/common/popup/dti_1006.aspx', 'guide')" style='cursor:pointer;' /></strong></th>
+                                 </tr>
+                                 <tr>
+                                   <th colspan="2">년</th>
+                                   <th width="7%">월</th>
+                                   <th width="7%">일</th>
+                                   <th class="borderBD3" colspan="10" rowspan="2"><input name="Uc$txtChargeAmount" type="text" id="Uc_txtChargeAmount" class="inputTot" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkNumByteLength(this,14);this.value=fnMakeCommaDcm(this.value);" style="width:94%;" /></th>
+                                   <th class="borderBD3" colspan="8" rowspan="2"><input name="Uc$txtTotalTaxAmount" type="text" id="Uc_txtTotalTaxAmount" class="inputTot" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkNumByteLength(this,13);this.value=fnMakeCommaDcm(this.value);" style="width:93%;" /></th>
+                                   <th class="borderBD3" colspan="10" rowspan="2">
+                                     
+                     <select name="Uc$ddlAmendmentStatus" id="Uc_ddlAmendmentStatus" onChange="ddlAmendmentStatus_Changed();" style="width:98%;">
+	<option value="">수정사유를 선택하세요</option>
+	<option value="03">환입</option>
+	<option value="04">계약의 해제</option>
+	<option value="05">내국신용장 사후 개설</option>
+	<option value="02">공급가액 변동</option>
+	<option value="01">기재사항의 착오&#183;정정 등</option>
+	<option value="06">착오에 의한 이중발급 등</option>
+
+</select>
+                     
+                                   </th>
+                                 </tr>
+                                 <tr>
+                                   <td class="borderBD3" colspan="4"><input name="Uc$txtDocumentDateTime" type="text" value="2023-04-24" id="Uc_txtDocumentDateTime" class="inputDamk" onblur="fnFmtDate3(this)" style="width:90%;height:14px;" /></td>
+                                 </tr>
+                                 <!--20100709 비고3개까지 늘어남 시작-->
+                                 <tr>
+                                   <td colspan="32" background="/image/center/bg_dti_note01.gif">
+                                    <table class="redTaxBillForm_r" width="100%">
+								      <tr height="22px">
+                                       <th width="96"><strong>비고 1</strong></th>                                     
+                                       <th width="625"><input name="Uc$txtDescriptionText" type="text" id="Uc_txtDescriptionText" Onblur="fnChkByteLength3(this,150);" class="inputL inputCom" onkeypress="return true;" style="width:99%;" /></th>                                       
+								       <th width="28"><img src="/image/center/bul_plus.gif" id="Uc_imgRemarkAdd" alt="추가" class="vaMiddle cPointer" width="13" height="13" onclick="fnAddDesc()" /></th>
+                                      </tr>
+                                      <tr><td height="1" bgcolor="#E66464" colspan="5"></td></tr>                                  
+                                      
+								      <tr id="Uc_trDesc2" height="22px" style="display:none">
+	<th><strong>비고 2</strong></th>
+	<th><input name="Uc$txtDescriptionText2" type="text" id="Uc_txtDescriptionText2" Onblur="fnChkByteLength3(this,150);" class="inputL inputCom" style="width:99%;" /></th>
+	<th><img src="/image/center/bul_minus.gif" id="Uc_imgRemarkDel1" alt="삭제" class="vaMiddle cPointer" width="13" height="13" onclick="fnDelDesc('2')" /></th>
+</tr>
+                                      
+                                      <tr id="Uc_trSubDesc2" style="display:none">
+	<td height="1" bgcolor="#E66464" colspan="5"></td>
+</tr>
+
+                                      
+								      <tr id="Uc_trDesc3" height="22px" style="display:none">
+	<th><strong>비고 3</strong></th>
+	<th><input name="Uc$txtDescriptionText3" type="text" id="Uc_txtDescriptionText3" Onblur="fnChkByteLength3(this,150);" class="inputL inputCom" style="width:99%;" /></th>
+	<th><img src="/image/center/bul_minus.gif" id="Uc_imgRemarkDel2" alt="삭제" class="vaMiddle cPointer" width="13" height="13" onclick="fnDelDesc('3')" /></th>
+</tr>
+
+                                      <tr id="Uc_trSubDesc3" style="display:none">
+	<td height="1" bgcolor="#E66464" colspan="5"></td>
+</tr>
+ 
+                                    </table>
+                                   </td>
+                                  </tr>
+	                              <!--20100709 비고3개까지 늘어남 끝-->                         
+                                  <!--20100709 품목 시작--->
+	                             <tr>
+		                            <td style="background-image:url(/image/center/bg_dtimk_td.gif)" colspan="32">
+		                                <table class="redTaxBillForm_p" summary="품목테이블" width="100%" id="dtiTable" >
+			                                <tr>
+			                                 <th width="22"><strong>월</strong></th>
+			                                 <th width="1"></th>
+			                                <th width="22"><strong>일</strong></th>
+			                                <th width="1"></th>
+			                                <th width="156"><strong>품목</strong></th>
+			                                <th width="1"></th>
+			                                <th width="62"><strong>규격</strong></th>
+			                                <th width="1"></th>
+			                                <th width="62"><strong>수량</strong></th>
+			                                <th width="1"></th>
+			                                <th width="62"><strong>단가</strong></th>
+			                                <th width="1"></th>
+			                                <th width="118"><strong>공급가액</strong></th>
+			                                <th width="1"></th>
+			                                <th width="118"><strong>세액</strong></th>
+			                                <th width="1"></th>
+			                                <th width="84"><strong>비고</strong></th>
+			                                <th width="1"></th>
+			                                <th width="22">
+			                                <img src="/image/center/bul_plus5.gif" id="Uc_btnItemPlus" alt="+5" width="13" height="13" onclick="addRowColor(4, 'AR');fnInpInit2('D');" style="cursor:pointer;" />
+			                                </th>
+		                                  </tr>
+		                                  <tr><td height="1" colspan="19"><img src="/image/center/bg_dti_red.gif"></td></tr>
+                                          <tr><td><input value="" class="inputCom1" name="txtItemMonth" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'m');" onkeyup="fnMoveFocus2(this, 2, 'txtItemDay');"></td><td width="1"></td><td><input value="" class="inputCom1" name="txtItemDay" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'d');" onkeyup="fnMoveFocus2(this, 2, 'txtTaxItemName');"></td><td width="1"></td><td><input value='' class="inputCom2" name="txtTaxItemName" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><input value='' class="inputCom11" name="txtTaxItemDef" type="text" Onblur="fnChkByteLength3(this,60);"></td><td width="1"></td><td><input value='' class="inputCom3" name="txtItemQty" type="text" onFocus="this.value=fnConvertNum(this.value,'.');" onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,12);fnCalcDTI2(this,'D');"></td><td  width="1"></td><td><input value='' class="inputCom3" name="txtItemBasicAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,14);fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtItemAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtTaxAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom5" name="txtItemDescription" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><img name="minusImage" alt="삭제" width="13" height="13" src="/image/center/bul_minus.gif" onclick="delItem(this.parentNode.parentNode.rowIndex);fnCalcType2('D');" style="cursor:pointer;"></td></tr><tr>    <td colspan="19"><img src="/image/center/bg_dti_red.gif"></td></tr><tr><td><input value="" class="inputCom1" name="txtItemMonth" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'m');" onkeyup="fnMoveFocus2(this, 2, 'txtItemDay');"></td><td width="1"></td><td><input value="" class="inputCom1" name="txtItemDay" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'d');" onkeyup="fnMoveFocus2(this, 2, 'txtTaxItemName');"></td><td width="1"></td><td><input value='' class="inputCom2" name="txtTaxItemName" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><input value='' class="inputCom11" name="txtTaxItemDef" type="text" Onblur="fnChkByteLength3(this,60);"></td><td width="1"></td><td><input value='' class="inputCom3" name="txtItemQty" type="text" onFocus="this.value=fnConvertNum(this.value,'.');" onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,12);fnCalcDTI2(this,'D');"></td><td  width="1"></td><td><input value='' class="inputCom3" name="txtItemBasicAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,14);fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtItemAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtTaxAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom5" name="txtItemDescription" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><img name="minusImage" alt="삭제" width="13" height="13" src="/image/center/bul_minus.gif" onclick="delItem(this.parentNode.parentNode.rowIndex);fnCalcType2('D');" style="cursor:pointer;"></td></tr><tr>    <td colspan="19"><img src="/image/center/bg_dti_red.gif"></td></tr><tr><td><input value="" class="inputCom1" name="txtItemMonth" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'m');" onkeyup="fnMoveFocus2(this, 2, 'txtItemDay');"></td><td width="1"></td><td><input value="" class="inputCom1" name="txtItemDay" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'d');" onkeyup="fnMoveFocus2(this, 2, 'txtTaxItemName');"></td><td width="1"></td><td><input value='' class="inputCom2" name="txtTaxItemName" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><input value='' class="inputCom11" name="txtTaxItemDef" type="text" Onblur="fnChkByteLength3(this,60);"></td><td width="1"></td><td><input value='' class="inputCom3" name="txtItemQty" type="text" onFocus="this.value=fnConvertNum(this.value,'.');" onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,12);fnCalcDTI2(this,'D');"></td><td  width="1"></td><td><input value='' class="inputCom3" name="txtItemBasicAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,14);fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtItemAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtTaxAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom5" name="txtItemDescription" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><img name="minusImage" alt="삭제" width="13" height="13" src="/image/center/bul_minus.gif" onclick="delItem(this.parentNode.parentNode.rowIndex);fnCalcType2('D');" style="cursor:pointer;"></td></tr><tr>    <td colspan="19"><img src="/image/center/bg_dti_red.gif"></td></tr><tr><td><input value="" class="inputCom1" name="txtItemMonth" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'m');" onkeyup="fnMoveFocus2(this, 2, 'txtItemDay');"></td><td width="1"></td><td><input value="" class="inputCom1" name="txtItemDay" type="text" onkeypress="fnChkDigit();" onblur="fnDateFormat2(this,'d');" onkeyup="fnMoveFocus2(this, 2, 'txtTaxItemName');"></td><td width="1"></td><td><input value='' class="inputCom2" name="txtTaxItemName" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><input value='' class="inputCom11" name="txtTaxItemDef" type="text" Onblur="fnChkByteLength3(this,60);"></td><td width="1"></td><td><input value='' class="inputCom3" name="txtItemQty" type="text" onFocus="this.value=fnConvertNum(this.value,'.');" onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,12);fnCalcDTI2(this,'D');"></td><td  width="1"></td><td><input value='' class="inputCom3" name="txtItemBasicAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnChkByteLength(this,14);fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtItemAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom4" name="txtTaxAmt" type="text" onFocus=this.value=fnConvertNum(this.value,'.'); onkeypress="fnChkNum2();" onBlur="fnCalcDTI2(this,'D');" maxlength="14"></td><td width="1"></td><td><input value='' class="inputCom5" name="txtItemDescription" type="text" Onblur="fnChkByteLength3(this,100);"></td><td width="1"></td><td><img name="minusImage" alt="삭제" width="13" height="13" src="/image/center/bul_minus.gif" onclick="delItem(this.parentNode.parentNode.rowIndex);fnCalcType2('D');" style="cursor:pointer;"></td></tr>				  
+		                                </table>
+		                            </td>
+	                             </tr>	                             	                            
+                                 
+                                 <tr>
+                                   <th colspan="6"><strong>합계금액</strong></th>
+                                   <th colspan="4"><strong>현금</strong></th>
+                                   <th colspan="4"><strong>수표</strong></th>
+                                   <th colspan="4"><strong>어음</strong></th>
+                                   <th colspan="4"><strong>외상미수금</strong></th>
+                                   <td colspan="4" rowspan="2" class="DTIRightText borderR0"> 이 금액을 </td>
+                                   <td colspan="4" rowspan="2" class="DTILeftText borderL0 borderR0">
+                                     <div align="center">
+                                       <span class="radio"><input id="Uc_rdtnTaxDemandIndicator1" type="radio" name="Uc$DTIDem" value="rdtnTaxDemandIndicator1" /><label for="Uc_rdtnTaxDemandIndicator1"> 영수</label></span>
+                                    <br />
+                                    <span class="radio"><input id="Uc_rdtnTaxDemandIndicator2" type="radio" name="Uc$DTIDem" value="rdtnTaxDemandIndicator2" checked="checked" /><label for="Uc_rdtnTaxDemandIndicator2"> 청구</label></span>
+                                    </div></td>
+                                   <td colspan="2" rowspan="2" class="DTILeftText borderL0"> 함 </td>
+                                 </tr>
+                                 <tr>
+                                   <td colspan="6"><input name="Uc$txtTotalAmount" type="text" maxlength="14" id="Uc_txtTotalAmount" class="inputR inputCom" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkByteLength(this,14);this.value=fnMakeCommaDcm(this.value);" style="width:126px;" /></td>
+                                   <td colspan="4"><input name="Uc$txtCash" type="text" maxlength="14" id="Uc_txtCash" class="inputR inputCom" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkByteLength(this,14);this.value=fnMakeCommaDcm(this.value);" style="width:80px;" /></td>
+                                   <td colspan="4"><input name="Uc$txtCheck" type="text" maxlength="14" id="Uc_txtCheck" class="inputR inputCom" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkByteLength(this,14);this.value=fnMakeCommaDcm(this.value);" style="width:85%;" /></td>
+                                   <td colspan="4"><input name="Uc$txtBill" type="text" maxlength="14" id="Uc_txtBill" class="inputR inputCom" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkByteLength(this,14);this.value=fnMakeCommaDcm(this.value);" style="width:78px;" /></td>
+                                   <td colspan="4"><input name="Uc$txtCredit" type="text" maxlength="14" id="Uc_txtCredit" class="inputR inputCom" onkeypress="fnChkNum()" onFocus="this.value=fnConvertNum(this.value,'.');" onblur="isNum(this);fnChkByteLength(this,14);this.value=fnMakeCommaDcm(this.value);" style="width:85%;" /></td>
+                                 </tr>
+                               </tbody>
+                             </table>
+                                
+                		        <input type="hidden" name="Uc$hdnCalcMethod" id="Uc_hdnCalcMethod" />
+                		        <input type="hidden" name="Uc$hdnCalcCnt" id="Uc_hdnCalcCnt" value="1" />   
+                		        <input type="hidden" name="txtItemMonth">                                        
+                                <input type="hidden" name="txtItemDay"> 
+                                <input type="hidden" name="txtTaxItemName"> 
+                                <input type="hidden" name="txtTaxItemDef"> 
+                                <input type="hidden" name="txtItemQty"> 
+                                <input type="hidden" name="txtItemBasicAmt"> 
+                                <input type="hidden" name="txtItemAmt"> 
+                                <input type="hidden" name="txtTaxAmt"> 
+                                <input type="hidden" name="txtItemDescription"> 
+                                <input type="hidden" name="minusImage">                                 
+                		                   		    
+                		        <input type="hidden" name="Uc$Signal" id="Uc_Signal" value="ARISSUE" />                		                    		                    		    
+                		        <input type="hidden" name="Uc$SupMemNo" id="Uc_SupMemNo" value="10037472" />
+                		        <input type="hidden" name="Uc$BrkDtiYn" id="Uc_BrkDtiYn" value="N" />
+                		        <input type="hidden" name="Uc$BrkMemNo" id="Uc_BrkMemNo" value="0" />
+                		        <input type="hidden" name="Uc$ByrMemNo" id="Uc_ByrMemNo" value="10037473" />
+                		        <input type="hidden" name="Uc$ByrComRegNo" id="Uc_ByrComRegNo" value="1111111113" />
+                		        <input type="hidden" name="Uc$ByrType" id="Uc_ByrType" value="M" />                		    
+                		        <input type="hidden" name="Uc$DtiId" id="Uc_DtiId" value="0" />
+                		        <input type="hidden" name="Uc$OldDtiId" id="Uc_OldDtiId" />
+                		        <input type="hidden" name="Uc$SupBPCode" id="Uc_SupBPCode" />
+                		        <input type="hidden" name="Uc$ByrBPCode" id="Uc_ByrBPCode" />
+                		        <input type="hidden" name="Uc$BrkBPCode" id="Uc_BrkBPCode" />
+                		        <input type="hidden" name="Uc$OldDtiWDay" id="Uc_OldDtiWDay" />                 		        
+                		        <input type="hidden" name="Uc$Direction" id="Uc_Direction" value="F" />                		        
+                		        
+                		        <input type="hidden" name="Uc$ReqRcvID" id="Uc_ReqRcvID" />
+                		                        		        
+                                <input type="hidden" name="Uc$DtiItem" id="Uc_DtiItem" />                      		        
+                		                                        
+                		        
+                           </div>
+
+                           
+                        </td>
+                     </tr>
+                     <tr>
+                        <td height="5"></td>
+                     </tr>
+                      <!-- 인증서 경로 수정 도움말 시작 -->
+                     <tr><td style="padding-bottom:10px;"><table width="746" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td valign="top"><img src="../../../image/center/img_btn_top.gif" width="753" height="5"></td>
+							  </tr>
+							  <tr>
+								<td background="../../../image/center/img_btn_bg.gif" style="padding:8px 10px 8px 25px"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+			  
+                                  <tr>
+									<td width="498" style="padding:4px 0 8px 0"><img src="../../../image/center/img_btn_txt_certificate_route.gif" width="611" height="13" ></td>									
+								  </tr>
+
+								  <tr>
+									<td>
+									<table width="145"  border="0" cellspacing="0" cellpadding="0">
+									 <tr><td><a href="javascript:certificate_popup()" title="인증서 경로 수정 도움말"><img src="../../../image/common/btn_certificate_route_help.gif" alt="인증서 경로 수정 도움말" width="145" height="19"/></td>
+									  </tr>
+									</table></td>
+								  </tr>
+								</table></td>
+							  </tr>
+							  <tr>
+								<td valign="top"><img src="../../../image/center/img_btn_bottom.gif" width="753" height="5"></td>
+							  </tr>
+							</table></td>
+                          </tr>
+                      <!-- 인증서 경로 수정 도움말 끝 -->
+                     <tr>
+                        <td>
+                                                        
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                              <tr>
+                                 <td bgcolor="A6C2DE" colspan="2" height="1"></td>
+                              </tr>
+                              
+                              
+                           
+                              <tr>
+                                 <td bgcolor="F1F6FA" height="27" style="padding:0 0 0 15px" width="13%">파일첨부</td>
+                                 <td bgcolor="FCFDFD" style="padding:1px 0 0 15px" width="87%"> 
+                                    <table border="0" cellpadding="0" cellspacing="0" width="446">                                    
+                                    
+                                       <tr id="trLink">
+	<td bgcolor="FCFDFD" height="27" width="88%">
+                                              <a id="linkFile"></a>
+                                              <div id="divIFrm" style="display:block;"><iframe id="ifrmFile" width="100%" height="26" frameborder="0" scrolling="no" src="../../common/file/FileAttachBack.aspx"></iframe></div>
+                                              
+                                          </td>
+	<td style="padding:3px 0 0 0" valign="top" width="12%">
+                                          <div align="center">
+                                           
+                                          </div>
+                                          </td>
+</tr>
+
+                                    </table>
+                                 </td>                                
+                              </tr>
+                              <tr>
+                                 <td bgcolor="C8DBEF" colspan="2" height="1"></td>
+                              </tr>
+                           
+                           
+                           
+                           
+                              <tr>
+								<td bgcolor="F1F6FA" height="27" style="padding:0 0 0 15px">공급받는자 담당자</td>
+								<td bgcolor="FCFDFD" style="padding:5px 0 0 15px">
+								<table border="0" cellpadding="0" cellspacing="0" width="560">
+									<tr>
+										<td bgcolor="FCFDFD" height="27" width="120">&bull; <span id="lblReceiverName">goodday</span> </td>
+										<td width="440"> <input name="txtRcvEmail1" type="text" value="goodday" id="txtRcvEmail1" class="inputCom" style="width:90px;" /> 
+                                              @ <input name="txtRcvEmail2" type="text" value="businesson.co.kr" id="txtRcvEmail2" class="inputCom" style="width:90px;" />  <select name="sltEmailList" id="sltEmailList" onchange="fnSelectEmail();"><option value="self">직접입력</option>
+												
+												<option value="naver.com">naver.com</option>
+                                                <option value="empal.com">empal.com</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="hanmail.net">hanmail.net</option>
+                                                <option value="hotmail.com">hotmail.com</option>
+                                                <option value="korea.com">korea.com</option>
+                                                <option value="nate.com">nate.com</option>
+                                                <option value="paran.com">paran.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                                <option value="hometax.go.kr">hometax.go.kr</option>     
+											</select>											
+										</td>
+										
+									</tr>
+									<tr><td class="graysmall" colspan="2" ><img height="1" src="/image/common/img_trans.gif" width="10" />* 메일 변경 시 위의 이메일 주소로 발송 됩니다. </td></tr>
+									<tr>
+										<td bgcolor="FCFDFD" height="27" >&bull; <input name="txtName2" type="text" id="txtName2" class="inputCom" style="width:90px" /></td>
+										<td> <input name="txtRcvEmail3" type="text" id="txtRcvEmail3" class="inputCom" style="width:90px;" /> 
+                                              @ <input name="txtRcvEmail4" type="text" id="txtRcvEmail4" class="inputCom" style="width:90px;" />  <select name="sltEmailList" id="sltEmailList2" onchange="fnSelectEmail2();"><option value="self">직접입력</option>
+												
+												<option value="naver.com">naver.com</option>
+                                                <option value="empal.com">empal.com</option>
+                                                <option value="gmail.com">gmail.com</option>
+                                                <option value="hanmail.net">hanmail.net</option>
+                                                <option value="hotmail.com">hotmail.com</option>
+                                                <option value="korea.com">korea.com</option>
+                                                <option value="nate.com">nate.com</option>
+                                                <option value="paran.com">paran.com</option>
+                                                <option value="daum.net">daum.net</option>
+                                                <option value="hometax.go.kr">hometax.go.kr</option>     
+											</select>
+										</td>
+									</tr>
+									<tr><td class="graysmall" colspan="2" ><img height="1" src="/image/common/img_trans.gif" width="10" />* 추가로 입력한 담당자에게 메일이 발송되며 추가 담당자는 수신승인 권한이 없습니다.</td></tr>
+								</table>
+								</td>
+							</tr>
+							<tr><td bgcolor="C8DBEF" colspan="2" height="1"></td></tr>
+							<!-- 삼성전자 연계시스템 선택 start -->
+							
+							<!-- 삼성전자 연계시스템 선택 end -->
+							
+							<tr>
+								<td bgcolor="F1F6FA" height="27" style="padding:0 0 0 15px" width="20%">부가알림 서비스</td>
+								<td bgcolor="FCFDFD" style="padding:5px 0 0 15px">
+								<table border="0" cellpadding="0" cellspacing="0" width="560">
+									<tr>
+										<td bgcolor="FCFDFD" height="25" width="120"><input name="chkSMS" type="checkbox" id="chkSMS" onclick="fnChkDtiSendSms()" style="cursor:pointer" /> 알림 발송  </td>
+										<td ><font color="D0D1D2">|</font><input name="chkFax" type="checkbox" id="chkFax" style="cursor:pointer" />팩스발송 <img height="1" src="/image/common/img_trans.gif" width="5" />
+										<!-- 2014-12-22 Fax번호 DB화 노학배 -->
+										<select name="ddlFax1" id="ddlFax1">
+	<option selected="selected" value="">선택</option>
+	<option value="02">02</option>
+	<option value="031">031</option>
+	<option value="032">032</option>
+	<option value="033">033</option>
+	<option value="041">041</option>
+	<option value="042">042</option>
+	<option value="043">043</option>
+	<option value="044">044</option>
+	<option value="050">050</option>
+	<option value="0502">0502</option>
+	<option value="0503">0503</option>
+	<option value="0504">0504</option>
+	<option value="0505">0505</option>
+	<option value="0506">0506</option>
+	<option value="0507">0507</option>
+	<option value="0508">0508</option>
+	<option value="051">051</option>
+	<option value="052">052</option>
+	<option value="053">053</option>
+	<option value="054">054</option>
+	<option value="055">055</option>
+	<option value="061">061</option>
+	<option value="062">062</option>
+	<option value="063">063</option>
+	<option value="064">064</option>
+	<option value="070">070</option>
+	<option value="080">080</option>
+
+</select>
+                                         - <input name="txtFax2" type="text" maxlength="4" id="txtFax2" class="inputCom" onkeypress="fnChkNum()" style="width:50px;" /> 
+                                       - <input name="txtFax3" type="text" maxlength="4" id="txtFax3" class="inputCom" onkeypress="fnChkNum()" style="width:74px;" />
+										</td>
+									</tr>
+									<tr><td colspan="2" height="25" class="graysmall"><img height="1" src="/image/common/img_trans.gif" width="10" />* 부가알림 서비스는 세금계산서 발행 완료 후 발송 하실 수 있습니다.</td></tr>
+								</table>
+								</td>
+							</tr>
+							<tr><td bgcolor="A6C2DE" colspan="2" height="1"></td></tr>
+							
+						</table>
+                                                        
+                        </td>
+                     </tr>
+                    <!--20201204 키워드광고 start-->
+                    <tr>
+                        <td>
+                            
+                        </td>
+                    </tr>
+                    <!--20201204 키워드광고 end-->
+                     <tr>
+                        <td> 
+                           <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                              <tr>
+                                 <td> 
+                                    
+                                    <table border="0" cellpadding="0" cellspacing="0" width="753px">
+                                       <tr>
+                                          <td colspan="2" height="15"></td>
+                                       </tr>
+                                       <tr>
+                                          <td align="center"> 
+                                            
+                                            
+											<img id="iBtnIssue" onclick="fnOpenModal();" src="/image/common/btn_DTI_issp_b.gif" border="0" alt="발행" style="cursor:pointer" align="absmiddle"/>
+											
+                                            
+                                            
+                                            <!--발행예정 버튼 추가 by 2011.11.01 장병동-->   
+                                            
+                                               
+                                            <img id="iBtnSave" onclick="fnFileSizeCheckBegin('SAVE', '10037472');" src="/image/common/btn_DTI_sav_b.gif" border="0" alt="저장" style="cursor:pointer" align="absmiddle"/>
+                                            
+                                                   
+                                            
+                                            <img id="iBtnPreview" onclick="fnFileSizeCheckBegin('PREVIEW', '10037472');" src="/image/common/btn_reviewbill.gif" border="0" alt="미리보기" style="cursor:pointer"  align="absmiddle"/>
+                                                 
+                                          </td>
+                                          <td  align="right">  
+                                            <input type="image" name="iBtnList" id="iBtnList" align="absmiddle" src="/image/common/btn_list.gif" alt="목록" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;iBtnList&quot;, &quot;&quot;, false, &quot;&quot;, &quot;/xDti/arap_mk/wt_doc/wtdoc_lst.aspx&quot;, false, false))" style="height:22px;width:49px;border-width:0px;" />
+                                            
+                                            <a id="lbtnIssueRequest" align="absmiddle" href="javascript:__doPostBack('lbtnIssueRequest','')" style="display:none">발행요청</a>  
+                                            <a id="btnIssue" align="absmiddle" href="javascript:__doPostBack('btnIssue','')" style="display:none">발행</a>
+                                            <a id="btnIssueSchedule" align="absmiddle" href="javascript:__doPostBack('btnIssueSchedule','')" style="display:none">발행예정</a>
+                                            <a id="btnSave" align="absmiddle" href="javascript:__doPostBack('btnSave','')" style="display:none">저장</a>
+                                            <a id="btnPreview" align="absmiddle" href="javascript:__doPostBack('btnPreview','')" style="display:none">미리보기</a>                                                      
+                                            <a id="ibtnGarbage" href="javascript:__doPostBack('ibtnGarbage','')" style="display:none"></a> 
+                                            <a id="btnByrChange" href="javascript:__doPostBack('btnByrChange','')" style="display:none"></a> 
+                                            <a id="btnByrChangeAdmin" href="javascript:__doPostBack('btnByrChangeAdmin','')" style="display:none"></a> 
+                                          </td>
+                                       </tr>
+                                    </table>                  
+                                    
+                                 </td>
+                              </tr>
+                                <!--컨텐츠와 바닥사이 여백 start-->
+                                <tr><td height="15"></td></tr>
+                                <tr align="center">
+                                <td>
+                                    <!-- 세금계산서 하단 광고 영역 제어 START-->
+						            
+						            <!-- 세금계산서 하단 광고 영역 제어 END-->
+						            <div id="BottomAd">
+							        <iframe src="/xMain/common/menu/DtiPreview_advertisement.html" name="SubMainBanner" width="728px" height="90px" marginwidth="0px" marginheight="0px" vspace="0px" hspace="0px" scrolling="no" frameborder="0"></iframe>
+						           </div>
+                                </td>
+                              </tr>
+                                <!--//컨텐츠와 바닥사이 여백 end-->
+                            </table>
+                                 </td>
+                              </tr>
+                            </table>
+                            <!--// 컨텐츠 영역 end-->
+	
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+</body>
+</html>
