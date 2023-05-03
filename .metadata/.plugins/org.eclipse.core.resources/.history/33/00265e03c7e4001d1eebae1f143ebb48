@@ -1,0 +1,34 @@
+
+var arrConvId = new Array();
+arrConvId[0] = '11111111192208758882201504011710003';
+var request = JSON.stringify({
+ 'MessageId': '3267cab1-3ea6-4aa6-b988-7d27d6d5ac89',
+ 'Signal': 'ARISSUE',
+ 'RequestTime': '20150401105301',
+ 'SendComRegno': '1111111119',
+ 'ReceiveComRegno': '2208758882',
+ 'AuthToken': 'dXVCcE96ZVlXVHBPeklGcitHQlErcmROYjhEeDFXYi8rVXJmVmZPQk1LTT0K',
+ 'ServiceCode': 'DTI',
+ 'SystemType': 'OAPI',
+ 'ConversationId': arrConvId,
+ 'SMTPEmail': '',
+ 'RValue': 'lSH2WInYgvm7lhfuSp6ptCZlbtY=', // 서명모듈 이용해서 발행할 경우에만 필요
+ 'CertPassword': ' Ygvm7lhfuSp6p', // 암호화된 인증서의 비밀번호
+'SystemId': '',
+'PlatformCode': '',
+ 'SignedXML': ''//서명정보가 있는 세금계산서 xml});
+$.support.cors = true;
+$.ajax({
+ type: "POST",
+ dataType: "json",
+ crossDomain: true,
+ contentType: "application/json",
+ url: "http://demoapi.smartbill.co.kr/sb-api/request/",
+ data: request,
+ success: function (data) {
+ fnGetData(data); //data 처리(하단의 Response Sample 참조)
+ },
+ error: function (error) {
+ //error 처리
+ }
+});
