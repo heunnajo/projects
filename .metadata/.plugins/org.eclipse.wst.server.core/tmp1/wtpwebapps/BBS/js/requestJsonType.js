@@ -1,0 +1,28 @@
+function ARISSUE(){
+var conversationID = document.getElementsByName("conversationID");
+var supBuyType = document.getElementsByName("supBuyType");
+var direction = document.getElementsByName("direction");
+var dtiDate = document.getElementsByName("dtiDate");
+var dtiType = document.getElementsByName("dtiType");
+var taxDemand = document.getElementsByName("taxDemand");
+var supComRegno = document.getElementsByName("supComRegno");
+var supRepName = document.getElementsByName("supRepName");
+var supComName = document.getElementsByName("supComName");
+var supComAddr = document.getElementsByName("supComAddr");
+var byrComRegno = document.getElementsByName("byrComRegno");
+var byrRepName = document.getElementsByName("byrRepName");
+var byrComName = document.getElementsByName("byrComName");
+var byrComAddr = document.getElementsByName("byrComAddr");
+var byrEmail = document.getElementsByName("byrEmail");
+var supAmount = document.getElementsByName("supAmount");
+var taxAmount = document.getElementsByName("taxAmount");
+var totalAmount = document.getElementsByName("totalAmount");
+var DttYn = document.getElementsByName("DttYn");
+var amendCode = document.getElementsByName("amendCode");
+var oriIssueId = document.getElementsByName("oriIssueId");
+
+//alert('conversationID'+conversationID);
+alert('conversationID');
+alert(conversationID);
+
+};
