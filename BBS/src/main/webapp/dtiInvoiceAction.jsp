@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import="javax.xml.bind.annotation.XmlElement" %>
+<%@ page import="javax.xml.bind.annotation.XmlRootelement" %>
+<%@ page import="javax.xml.bind.annotation.XmlType" %>
 <%@ page import="dti.DtiDAO" %>
 <%@ page language="java" import="java.sql.*"%>
 <%@ page import="java.util.*" %>
