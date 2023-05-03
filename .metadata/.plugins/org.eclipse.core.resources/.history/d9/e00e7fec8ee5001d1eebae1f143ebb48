@@ -1,0 +1,121 @@
+package dti;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONObject;
+
+public class DtiDAO {
+	private Connection conn;
+	private ResultSet rs;
+	//private PreparedStatement pstmt;글쓰기의 경우, 3개의 함수마다 충돌이 일어나지 않도록 각 함수별로 만들어준다!
+	
+	public DtiDAO() {
+		try {
+			String dbURL = "jdbc:mysql://localhost:3306/BBS";
+			String dbID = "root";
+			String dbPassword = "root";
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
+			
+		} catch(Exception e) {
+			e.printStackTrace();//오류 발생시 오류 뭔지 출력
+		}
+	}
+	public String getDate() {
+		String SQL = "SELECT NOW()";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();//오류 발생시 오류 뭔지 출력
+		}
+		return "";
+	}
+	
+	public int getNext() {
+		String SQL = "SELECT CONVERSATION_ID FROM xxsb_dti_main ORDER BY CONVERSATION_ID DESC";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1) + 1;
+			}
+			return 1;//현재가 첫번째 게시글인 경우
+		} catch(Exception e) {
+			e.printStackTrace();//오류 발생시 오류 뭔지 출력
+		}
+		return -1; //데이터베이스 오류
+	}
+	public int getCount() {
+		
+		String SQL = "SELECT COUNT(*) FROM xxsb_dti_main";
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	/*public int getAvailableCount() {
+		String SQL = "SELECT COUNT(*) FROM DTI WHERE bbsAvailable = 1";
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}*/
+//	public int write(String conversationID, String supBuyType, String direction) {
+//		String SQL = "INSERT INTO xxsb_dti_main VALUES (?, ?, ?)";
+	public int write(String conversationID, String supBuyType, String direction, String dtiDate, String dtiType,
+			String taxDemand, String supComRegno, String supRepName, String supComName, String supComAddr,
+			String byrComRegno, String byrRepName, String byrComName, String byrComAddr, String byrEmail,
+			String supAmount, String taxAmount, String totalAmount, String DttYn, String amendCode,String oriIssueId) {
+		String SQL = "INSERT INTO xxsb_dti_main VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1,conversationID);
+			pstmt.setString(2,supBuyType);//AR:매출 AP:매입
+			pstmt.setString(3,direction);//1:역발행 2:정발행
+			pstmt.setString(4,dtiDate);
+			pstmt.setString(5,dtiType);
+			pstmt.setString(6,taxDemand);
+			pstmt.setString(7,supComRegno);
+			pstmt.setString(8,supRepName);
+			pstmt.setString(9,supComName);
+			pstmt.setString(10,supComAddr);
+			pstmt.setString(11,byrComRegno);
+			pstmt.setString(12,byrRepName);
+			pstmt.setString(13,byrComName);
+			pstmt.setString(14,byrComAddr);
+			pstmt.setString(15,byrEmail);
+			pstmt.setString(16,supAmount);
+			pstmt.setString(17,taxAmount);
+			pstmt.setString(18,totalAmount);
+			pstmt.setString(19,DttYn);
+			pstmt.setString(20,amendCode);
+			pstmt.setString(21,oriIssueId);
+			
+			return pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();//오류 발생시 오류 뭔지 출력
+		}
+		return -1; //데이터베이스 오류
+	}
+}
