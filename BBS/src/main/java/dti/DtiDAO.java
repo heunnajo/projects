@@ -153,19 +153,19 @@ public class DtiDAO {
 			JSONObject jsonObj = new JSONObject(); 
 			jsonObj.put("MessageId", "3267cab1-3ea6-4aa6-b988-7d27d6d5ac89"); 
 			jsonObj.put("Signal", "ARISSUE"); 
-			jsonObj.put("RequestTime", "20150401105301"); 
-			jsonObj.put("SendComRegno", "1111111119"); 
-			jsonObj.put("ReceiveComRegno", "2208758882"); 
-			jsonObj.put("AuthToken", "dXVCcE96ZVlXVHBPeklGcitHQlErcmROYjhEeDFXYi8rVXJmVmZPQk1LTT0K"); 
+			jsonObj.put("RequestTime", "20230501105301"); 
+			jsonObj.put("SendComRegno", "1010101010"); 
+			jsonObj.put("ReceiveComRegno", "1111111113"); 
+			jsonObj.put("AuthToken", "blhwU2kvVkNTVDhiejdsbWRHV21lM3pSeUlyZzRHUkxYV2VhdGhGOXVVdmdIK1dMN21XZlc0RGlBb05xTVIzcwo="); 
 			jsonObj.put("ServiceCode", "DTI"); 
 			jsonObj.put("SystemType", "OAPI"); 
 			jsonObj.put("ConversationId", arrConvId); 
 			jsonObj.put("SMTPEmail", ""); 
-			jsonObj.put("RValue", "lSH2WInYgvm7lhfuSp6ptCZlbtY="); // 서명모듈 이용해서 발행할 경우에만 필요
-			jsonObj.put("CertPassword", "Ygvm7lhfuSp6p"); // 암호화된 인증서의 비밀번호
+			jsonObj.put("RValue", ""); // 서명모듈 이용해서 발행할 경우에만 필요
+			jsonObj.put("CertPassword", "6tVnMtI7GhHX4P9scDgmhw=="); // 암호화된 인증서의 비밀번호
 			jsonObj.put("SystemId", ""); 
 			jsonObj.put("PlatformCode", ""); // 허브업체의 구분코드
-			jsonObj.put("SignedXML", ""); 
+			jsonObj.put("SignedXML", "SignedXML"); //?
 			System.out.println("jsonObj"+jsonObj);
 			
 			//송신측, 요청 객체
